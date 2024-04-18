@@ -1,3 +1,6 @@
 class Move:
     # TODO: define Move
-    pass
+    def __init__(self, name: str, type: str, power: int):
+        self.name = name
+        self.type = type
+        self.power = power
