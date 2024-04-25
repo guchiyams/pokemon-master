@@ -1,7 +1,10 @@
 {
     "player": {
-        "active_pokemon_index": 2,
-        "fainted_pokemons": [0],
+        "active_pokemon_index": 1,
+        "fainted_pokemons": [
+            0,
+            2
+        ],
         "pokemon_team": [
             {
                 "species": "squirtle",
@@ -65,7 +68,7 @@
             },
             {
                 "species": "pikachu",
-                "current_hp": 900,
+                "current_hp": 0,
                 "base_stats": {
                     "hp": 90,
                     "speed": 90,
@@ -97,7 +100,9 @@
     },
     "ai": {
         "active_pokemon_index": 2,
-        "fainted_pokemons": [1],
+        "fainted_pokemons": [
+            1
+        ],
         "pokemon_team": [
             {
                 "species": "squirtle",
@@ -191,6 +196,6 @@
             }
         ]
     },
-    "turn_order": "ai",
+    "turn_order": "player",
     "winner": ""
 }
