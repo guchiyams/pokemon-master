@@ -147,13 +147,19 @@ def bestMove(game_state):
 
     # perform best move
     if bestMove < POKEMON_NUM_OF_MOVES:     # best move is attack
-        game_state = attack(game_state, bestMove)
+        # game_state = attack(game_state, bestMove)
+        return {
+            'move': bestMove
+        }
     # best move is switch
     else:
-        game_state[turn_order]['active_pokemon_index'] = moves[bestMove]['switch']
+        # game_state[turn_order]['active_pokemon_index'] = moves[bestMove]['switch']
+        return {
+            'switch': moves[bestMove]['switch']
+        }
 
-    game_state['turn_order'] = opponent
-    return game_state
+    # game_state['turn_order'] = opponent
+    # return game_state
 
 def minimax(game_state, depth, isMaximizing) -> float:
     """
@@ -238,5 +244,5 @@ with open('./data.json', 'r') as f:
 game_state = bestMove(game_state)
 # pprint(game_state)
 
-with open('./next_state.json', 'w') as f:
+with open('./next_state.json', 'w') as f: 
     json.dump(game_state, f, indent=4)
