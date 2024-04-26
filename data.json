@@ -1,0 +1,202 @@
+{
+    "player": {
+        "active_pokemon_index": 0,
+        "fainted_pokemons": [],
+        "pokemon_team": [
+            {
+                "species": "squirtle",
+                "type": "water",
+                "current_hp": 120,
+                "base_stats": {
+                    "hp": 120,
+                    "speed": 3,
+                    "moves": [
+                        {
+                            "name": "Tackle",
+                            "type": "normal",
+                            "power": 40
+                        },
+                        {
+                            "name": "Tail Whip",
+                            "type": "normal",
+                            "power": 0
+                        },
+                        {
+                            "name": "Bubble",
+                            "type": "water",
+                            "power": 40
+                        },
+                        {
+                            "name": "Withdraw",
+                            "type": "water",
+                            "power": 0
+                        }
+                    ]
+                }
+            },
+            {
+                "species": "charmander",
+                "type": "fire",
+                "current_hp": 240,
+                "base_stats": {
+                    "hp": 240,
+                    "speed": 12,
+                    "moves": [
+                        {
+                            "name": "Scratch",
+                            "type": "normal",
+                            "power": 40
+                        },
+                        {
+                            "name": "Growl",
+                            "type": "normal",
+                            "power": 0
+                        },
+                        {
+                            "name": "Ember",
+                            "type": "fire",
+                            "power": 40
+                        },
+                        {
+                            "name": "Smokescreen",
+                            "type": "normal",
+                            "power": 0
+                        }
+                    ]
+                }
+            },
+            {
+                "species": "pikachu",
+                "type": "electric",
+                "current_hp": 90,
+                "base_stats": {
+                    "hp": 90,
+                    "speed": 90,
+                    "moves": [
+                        {
+                            "name": "Quick Attack",
+                            "type": "normal",
+                            "power": 40
+                        },
+                        {
+                            "name": "Thunder Shock",
+                            "type": "electric",
+                            "power": 40
+                        },
+                        {
+                            "name": "Double Team",
+                            "type": "normal",
+                            "power": 0
+                        },
+                        {
+                            "name": "Thunder Wave",
+                            "type": "electric",
+                            "power": 0
+                        }
+                    ]
+                }
+            }
+        ]
+    },
+    "ai": {
+        "active_pokemon_index": 1,
+        "fainted_pokemons": [],
+        "pokemon_team": [
+            {
+                "species": "squirtle",
+                "type": "water",
+                "current_hp": 240,
+                "base_stats": {
+                    "hp": 240,
+                    "speed": 3,
+                    "moves": [
+                        {
+                            "name": "Tackle",
+                            "type": "normal",
+                            "power": 40
+                        },
+                        {
+                            "name": "Tail Whip",
+                            "type": "normal",
+                            "power": 0
+                        },
+                        {
+                            "name": "Bubble",
+                            "type": "water",
+                            "power": 40
+                        },
+                        {
+                            "name": "Withdraw",
+                            "type": "water",
+                            "power": 0
+                        }
+                    ]
+                }
+            },
+            {
+                "species": "charmander",
+                "type": "fire",
+                "current_hp": 240,
+                "base_stats": {
+                    "hp": 240,
+                    "speed": 3,
+                    "moves": [
+                        {
+                            "name": "Scratch",
+                            "type": "normal",
+                            "power": 40
+                        },
+                        {
+                            "name": "Growl",
+                            "type": "normal",
+                            "power": 0
+                        },
+                        {
+                            "name": "Ember",
+                            "type": "fire",
+                            "power": 40
+                        },
+                        {
+                            "name": "Smokescreen",
+                            "type": "normal",
+                            "power": 0
+                        }
+                    ]
+                }
+            },
+            {
+                "species": "pikachu",
+                "type": "electric",
+                "current_hp": 120,
+                "base_stats": {
+                    "hp": 120,
+                    "speed": 3,
+                    "moves": [
+                        {
+                            "name": "Quick Attack",
+                            "type": "normal",
+                            "power": 40
+                        },
+                        {
+                            "name": "Thunder Shock",
+                            "type": "electric",
+                            "power": 40
+                        },
+                        {
+                            "name": "Double Team",
+                            "type": "normal",
+                            "power": 0
+                        },
+                        {
+                            "name": "Thunder Wave",
+                            "type": "electric",
+                            "power": 0
+                        }
+                    ]
+                }
+            }
+        ]
+    },
+    "turn_order": "ai",
+    "winner": ""
+}
