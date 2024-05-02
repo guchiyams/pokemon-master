@@ -1,7 +1,28 @@
 from copy import deepcopy
-from pprint import pprint
-import sys
 import json
+import sys
+
+# Type effectiveness chart
+TYPE_CHART = {
+    'normal': {'normal': 1.0, 'fire': 1.0, 'water': 1.0, 'electric': 1.0, 'grass': 1.0, 'ice': 1.0, 'fighting': 1.0, 'poison': 1.0, 'ground': 1.0, 'flying': 1.0, 'psychic': 1.0, 'bug': 1.0, 'rock': 0.5, 'ghost': 0.0, 'dragon': 1.0, 'dark': 1.0, 'steel': 0.5, 'fairy': 1.0},
+    'fire': {'normal': 1.0, 'fire': 0.5, 'water': 0.5, 'electric': 1.0, 'grass': 2.0, 'ice': 2.0, 'fighting': 1.0, 'poison': 1.0, 'ground': 1.0, 'flying': 1.0, 'psychic': 1.0, 'bug': 2.0, 'rock': 0.5, 'ghost': 1.0, 'dragon': 1.0, 'dark': 1.0, 'steel': 2.0, 'fairy': 1.0},
+    'water': {'normal': 1.0, 'fire': 2.0, 'water': 0.5, 'electric': 1.0, 'grass': 0.5, 'ice': 1.0, 'fighting': 1.0, 'poison': 1.0, 'ground': 2.0, 'flying': 1.0, 'psychic': 1.0, 'bug': 1.0, 'rock': 2.0, 'ghost': 1.0, 'dragon': 1.0, 'dark': 1.0, 'steel': 1.0, 'fairy': 1.0},
+    'electric': {'normal': 1.0, 'fire': 1.0, 'water': 2.0, 'electric': 0.5, 'grass': 0.5, 'ice': 1.0, 'fighting': 1.0, 'poison': 1.0, 'ground': 0.0, 'flying': 2.0, 'psychic': 1.0, 'bug': 1.0, 'rock': 1.0, 'ghost': 1.0, 'dragon': 1.0, 'dark': 1.0, 'steel': 1.0, 'fairy': 1.0},
+    'grass': {'normal': 1.0, 'fire': 0.5, 'water': 2.0, 'electric': 1.0, 'grass': 0.5, 'ice': 1.0, 'fighting': 1.0, 'poison': 0.5, 'ground': 2.0, 'flying': 0.5, 'psychic': 1.0, 'bug': 0.5, 'rock': 2.0, 'ghost': 1.0, 'dragon': 1.0, 'dark': 1.0, 'steel': 0.5, 'fairy': 1.0},
+    'ice': {'normal': 1.0, 'fire': 0.5, 'water': 0.5, 'electric': 1.0, 'grass': 2.0, 'ice': 0.5, 'fighting': 1.0, 'poison': 1.0, 'ground': 2.0, 'flying': 2.0, 'psychic': 1.0, 'bug': 1.0, 'rock': 1.0, 'ghost': 1.0, 'dragon': 2.0, 'dark': 1.0, 'steel': 0.5, 'fairy': 1.0},
+    'fighting': {'normal': 2.0, 'fire': 1.0, 'water': 1.0, 'electric': 1.0, 'grass': 1.0, 'ice': 2.0, 'fighting': 1.0, 'poison': 0.5, 'ground': 1.0, 'flying': 0.5, 'psychic': 0.5, 'bug': 0.5, 'rock': 2.0, 'ghost': 0.0, 'dragon': 1.0, 'dark': 2.0, 'steel': 1.0, 'fairy': 0.5},
+    'poison': {'normal': 1.0, 'fire': 1.0, 'water': 1.0, 'electric': 1.0, 'grass': 2.0, 'ice': 1.0, 'fighting': 1.0, 'poison': 0.5, 'ground': 0.5, 'flying': 1.0, 'psychic': 1.0, 'bug': 1.0, 'rock': 0.5, 'ghost': 0.5, 'dragon': 1.0, 'dark': 1.0, 'steel': 1.0, 'fairy': 2.0},
+    'ground': {'normal': 1.0, 'fire': 2.0, 'water': 1.0, 'electric': 2.0, 'grass': 0.5, 'ice': 1.0, 'fighting': 1.0, 'poison': 2.0, 'ground': 1.0, 'flying': 0.0, 'psychic': 1.0, 'bug': 0.5, 'rock': 2.0, 'ghost': 1.0, 'dragon': 1.0, 'dark': 1.0, 'steel': 2.0, 'fairy': 1.0},
+    'flying': {'normal': 1.0, 'fire': 1.0, 'water': 1.0, 'electric': 0.5, 'grass': 2.0, 'ice': 1.0,'fighting': 2.0, 'poison': 1.0, 'ground': 1.0, 'flying': 1.0, 'psychic': 1.0, 'bug': 2.0, 'rock': 0.5, 'ghost': 1.0, 'dragon': 1.0, 'dark': 1.0, 'steel': 0.5, 'fairy': 1.0},
+    'psychic': {'normal': 1.0, 'fire': 1.0, 'water': 1.0, 'electric': 1.0, 'grass': 1.0, 'ice': 1.0, 'fighting': 2.0, 'poison': 2.0, 'ground': 1.0, 'flying': 1.0, 'psychic': 0.5, 'bug': 1.0, 'rock': 1.0, 'ghost': 1.0, 'dragon': 1.0, 'dark': 0.0, 'steel': 0.5, 'fairy': 1.0},
+    'bug': {'normal': 1.0, 'fire': 0.5, 'water': 1.0, 'electric': 1.0, 'grass': 2.0, 'ice': 1.0, 'fighting': 0.5, 'poison': 1.0, 'ground': 0.5, 'flying': 0.5, 'psychic': 2.0, 'bug': 1.0, 'rock': 1.0, 'ghost': 0.5, 'dragon': 1.0, 'dark': 2.0, 'steel': 0.5, 'fairy': 0.5},
+    'rock': {'normal': 1.0, 'fire': 2.0, 'water': 1.0, 'electric': 1.0, 'grass': 1.0, 'ice': 2.0, 'fighting': 0.5, 'poison': 1.0, 'ground': 0.5, 'flying': 2.0, 'psychic': 1.0, 'bug': 2.0, 'rock': 1.0, 'ghost': 1.0, 'dragon': 1.0, 'dark': 1.0, 'steel': 2.0, 'fairy': 1.0},
+    'ghost': {'normal': 0.0, 'fire': 1.0, 'water': 1.0, 'electric': 1.0, 'grass': 1.0, 'ice': 1.0, 'fighting': 1.0, 'poison': 1.0, 'ground': 1.0, 'flying': 1.0, 'psychic': 1.0, 'bug': 1.0, 'rock': 1.0, 'ghost': 2.0, 'dragon': 1.0, 'dark': 0.5, 'steel': 1.0, 'fairy': 1.0},
+    'dragon': {'normal': 1.0, 'fire': 1.0, 'water': 1.0, 'electric': 1.0, 'grass': 1.0, 'ice': 1.0, 'fighting': 1.0, 'poison': 1.0, 'ground': 1.0, 'flying': 1.0, 'psychic': 1.0, 'bug': 1.0, 'rock': 1.0, 'ghost': 1.0, 'dragon': 2.0, 'dark': 1.0, 'steel': 0.5, 'fairy': 0.0},
+    'dark': {'normal': 1.0, 'fire': 1.0, 'water': 1.0, 'electric': 1.0, 'grass': 1.0, 'ice': 1.0, 'fighting': 0.5, 'poison': 1.0, 'ground': 1.0, 'flying': 1.0, 'psychic': 2.0, 'bug': 1.0, 'rock': 1.0, 'ghost': 2.0, 'dragon': 1.0, 'dark': 0.5, 'steel': 1.0, 'fairy': 0.5},
+    'steel': {'normal': 1.0, 'fire': 0.5, 'water': 0.5, 'electric': 0.5, 'grass': 1.0, 'ice': 2.0, 'fighting': 1.0, 'poison': 1.0, 'ground': 1.0, 'flying': 1.0, 'psychic': 1.0, 'bug': 1.0, 'rock': 2.0, 'ghost': 1.0, 'dragon': 1.0, 'dark': 1.0, 'steel': 0.5, 'fairy': 2.0},
+    'fairy': {'normal': 1.0, 'fire': 0.5, 'water': 1.0, 'electric': 1.0, 'grass': 1.0, 'ice': 1.0, 'fighting': 2.0, 'poison': 0.5, 'ground': 1.0, 'flying': 1.0, 'psychic': 1.0, 'bug': 1.0, 'rock': 1.0, 'ghost': 1.0, 'dragon': 2.0, 'dark': 2.0, 'steel': 0.5, 'fairy': 1.0}
+}
 
 POKEMON_TEAM_SIZE = 3
 POKEMON_NUM_OF_MOVES = 4
@@ -79,7 +100,10 @@ def attack(game_state, move_index):
             pass
             # print(f"all pokemons for {opponent} have fainted.")     # should be deemed game over
     else:
-        opponent_pokemon['current_hp'] -= attack_move['power']
+        # Calculate damage based on type effectiveness
+        effectiveness = get_type_effectiveness(attack_move['type'], opponent_pokemon['type'])
+        damage = attack_move['power'] * effectiveness
+        opponent_pokemon['current_hp'] -= damage
 
     return game_state_copy
 
@@ -102,12 +126,16 @@ def getMoveset(game_state):
 
     return moves
 
-def bestMove(game_state):
+def bestMove(game_state, top_n=5):
     """
-    performs the next best move given current game state
+    Finds and prints the top n best moves for the given game state.
 
-    params:
-        game state  (dict)
+    Parameters:
+        game_state (dict): The current state of the game.
+        top_n (int): Number of top moves to print.
+
+    Returns:
+        None
     """
     # determine turn order and opponent
     turn_order = game_state['turn_order']
@@ -115,9 +143,8 @@ def bestMove(game_state):
     
     moves = getMoveset(game_state)
 
-    # initialize score to -INFINITY
-    bestScore = -(sys.maxsize)
-    bestMove = None
+    # Initialize a list to store move scores
+    move_scores = []
 
     # iterate through all possible moves
     for move_index in range(len(moves)):
@@ -136,30 +163,20 @@ def bestMove(game_state):
             
         game_state_copy['turn_order'] = opponent
             
-        # get best score and best move
+        # get score for the current move
         score = minimax(game_state_copy, 0, False)
-        print(score)
-        if score > bestScore:
-            bestScore = score
-            bestMove = move_index
 
-    print(f'best move: {moves[bestMove]}')
+        # Append move index and its score to the list
+        move_scores.append((move_index, score))
 
-    # perform best move
-    if bestMove < POKEMON_NUM_OF_MOVES:     # best move is attack
-        # game_state = attack(game_state, bestMove)
-        return {
-            'move': bestMove
-        }
-    # best move is switch
-    else:
-        # game_state[turn_order]['active_pokemon_index'] = moves[bestMove]['switch']
-        return {
-            'switch': moves[bestMove]['switch']
-        }
+    # Sort moves based on their scores in descending order
+    move_scores.sort(key=lambda x: x[1], reverse=True)
 
-    # game_state['turn_order'] = opponent
-    # return game_state
+    # Print the top n best moves
+    print("Top", top_n, "Best Moves:")
+    for i in range(min(top_n, len(move_scores))):
+        move_index, score = move_scores[i]
+        print("Move:", moves[move_index], "Score:", score)
 
 def minimax(game_state, depth, isMaximizing) -> float:
     """
@@ -237,11 +254,16 @@ def minimax(game_state, depth, isMaximizing) -> float:
 
         return bestScore
 
+def get_type_effectiveness(attack_type, defender_type):
+    """Return the type effectiveness multiplier."""
+    effectiveness = TYPE_CHART[attack_type][defender_type]
+    return effectiveness
+
 with open('./data.json', 'r') as f:
     game_state = json.load(f)
     # print(game_state)
 
-game_state = bestMove(game_state)
+game_state = bestMove(game_state, top_n=5)
 # pprint(game_state)
 
 with open('./next_state.json', 'w') as f: 
