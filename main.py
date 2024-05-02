@@ -191,7 +191,7 @@ def minimax(game_state, depth, alpha, beta, isMaximizing) -> float:
     returns: 
         best score  (float)
     """
-    if depth > 5:
+    if depth > 6:
         return getCurrentScore(game_state)
     
     # check for terminal state / winner
@@ -272,8 +272,12 @@ with open('./data.json', 'r') as f:
     game_state = json.load(f)
     # print(game_state)
 
+import time
+start_time = time.time()
+
 game_state = bestMove(game_state, top_n=5)
-# pprint(game_state)
+
+print("--- %s seconds ---" % (time.time() - start_time))
 
 # with open('./next_state.json', 'w') as f: 
 #     json.dump(game_state, f, indent=4)
