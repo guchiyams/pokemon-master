@@ -164,7 +164,7 @@ def bestMove(game_state, top_n=5):
         game_state_copy['turn_order'] = opponent
             
         # get score for the current move
-        score = minimax(game_state_copy, 0, False)
+        score = minimax(game_state_copy, 0, float('-inf'), float('inf'),  False)
 
         # Append move index and its score to the list
         move_scores.append((move_index, score))
@@ -178,13 +178,15 @@ def bestMove(game_state, top_n=5):
         move_index, score = move_scores[i]
         print("Move:", moves[move_index], "Score:", score)
 
-def minimax(game_state, depth, isMaximizing) -> float:
+def minimax(game_state, depth, alpha, beta, isMaximizing) -> float:
     """
     recursively determine best option for player depending on turn and return the terminal state score
     
     params:
         game state  (dict)
         depth       (int)
+        alpha       (alpha)
+        beta        (beta)
         turn        (bool)
     returns: 
         best score  (float)
@@ -200,7 +202,7 @@ def minimax(game_state, depth, isMaximizing) -> float:
     # if AI's turn -> maximize
     if isMaximizing:
         moves = getMoveset(game_state)
-        bestScore = -(sys.maxsize)  # initialize score to -INFINITY
+        bestScore =  float('-inf')  # initialize score to -INFINITY
 
         # iterate through all possible moves
         for move_index in range(len(moves)):
@@ -221,14 +223,17 @@ def minimax(game_state, depth, isMaximizing) -> float:
             game_state_copy['turn_order'] = 'player'
 
             # get best score and best move
-            score = minimax(game_state_copy, depth + 1, False)
+            score = minimax(game_state_copy, depth + 1, alpha, beta, False)
             bestScore = max(score, bestScore)
+            alpha = max(alpha, score)
+            if beta <= alpha:
+                break   # prune
 
         return bestScore
     # if player's turn -> minimize
     else:
         moves = getMoveset(game_state)
-        bestScore = sys.maxsize     # initialize score to INFINITY
+        bestScore = float('inf')     # initialize score to INFINITY
 
         # iterate through all possible moves
         for move_index in range(len(moves)):
@@ -249,8 +254,12 @@ def minimax(game_state, depth, isMaximizing) -> float:
             game_state_copy['turn_order'] = 'ai'
             
             # get best score and best move
-            score = minimax(game_state_copy, depth + 1, True)
+            score = minimax(game_state_copy, depth + 1, alpha, beta, True)
             bestScore = min(score, bestScore)
+
+            beta = min(beta, score)
+            if beta <= alpha:
+                break  # prune
 
         return bestScore
 
@@ -266,5 +275,5 @@ with open('./data.json', 'r') as f:
 game_state = bestMove(game_state, top_n=5)
 # pprint(game_state)
 
-with open('./next_state.json', 'w') as f: 
-    json.dump(game_state, f, indent=4)
+# with open('./next_state.json', 'w') as f: 
+#     json.dump(game_state, f, indent=4)
