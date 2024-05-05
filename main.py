@@ -88,7 +88,11 @@ def attack(game_state, move_index):
     game_state_copy = deepcopy(game_state)
     opponent_pokemon = game_state_copy[opponent]['pokemon_team'][opponent_pokemon_index]
 
-    if opponent_pokemon['current_hp'] - attack_move['power'] <= 0:
+    # calculate damage based on type effectiveness
+    effectiveness = get_type_effectiveness(attack_move['type'], opponent_pokemon['type'])
+    damage = attack_move['power'] * effectiveness
+
+    if opponent_pokemon['current_hp'] - damage <= 0:
         opponent_pokemon['current_hp'] = 0
         game_state_copy[opponent]['fainted_pokemons'].append(opponent_pokemon_index)
         
@@ -100,9 +104,6 @@ def attack(game_state, move_index):
             pass
             # print(f"all pokemons for {opponent} have fainted.")     # should be deemed game over
     else:
-        # Calculate damage based on type effectiveness
-        effectiveness = get_type_effectiveness(attack_move['type'], opponent_pokemon['type'])
-        damage = attack_move['power'] * effectiveness
         opponent_pokemon['current_hp'] -= damage
 
     return game_state_copy
@@ -172,11 +173,14 @@ def bestMove(game_state, top_n=5):
     # Sort moves based on their scores in descending order
     move_scores.sort(key=lambda x: x[1], reverse=True)
 
-    # Print the top n best moves
-    print("Top", top_n, "Best Moves:")
-    for i in range(min(top_n, len(move_scores))):
-        move_index, score = move_scores[i]
-        print("Move:", moves[move_index], "Score:", score)
+    # print top n moves for debugging
+    # print("Top", top_n, "Best Moves:")
+    # for i in range(min(top_n, len(move_scores))):
+    #     move_index, score = move_scores[i]
+    #     print("Move:", moves[move_index], "Score:", score)
+
+    move_index, score = move_scores[0]
+    return moves[move_index]
 
 def minimax(game_state, depth, alpha, beta, isMaximizing) -> float:
     """
