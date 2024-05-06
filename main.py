@@ -180,7 +180,7 @@ def bestMove(game_state, top_n=5):
     #     print("Move:", moves[move_index], "Score:", score)
 
     move_index, score = move_scores[0]
-    return moves[move_index]
+    return move_index
 
 def minimax(game_state, depth, alpha, beta, isMaximizing) -> float:
     """
