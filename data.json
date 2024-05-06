@@ -99,7 +99,7 @@
         ]
     },
     "ai": {
-        "active_pokemon_index": 1,
+        "active_pokemon_index": 0,
         "fainted_pokemons": [],
         "pokemon_team": [
             {

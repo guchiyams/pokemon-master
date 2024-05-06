@@ -179,8 +179,16 @@ def bestMove(game_state, top_n=5):
     #     move_index, score = move_scores[i]
     #     print("Move:", moves[move_index], "Score:", score)
 
-    move_index, score = move_scores[0]
-    return move_index
+    # get best move index
+    best_move_index, _ = move_scores[0]
+    best_move = moves[best_move_index]
+
+    # move is a switch
+    if "switch" in best_move:
+        return best_move
+    # move is a move
+    else:
+        return {"move": best_move_index}
 
 def minimax(game_state, depth, alpha, beta, isMaximizing) -> float:
     """
