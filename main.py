@@ -290,6 +290,3 @@ start_time = time.time()
 game_state = bestMove(game_state, top_n=5)
 
 print("--- %s seconds ---" % (time.time() - start_time))
-
-# with open('./next_state.json', 'w') as f: 
-#     json.dump(game_state, f, indent=4)
